@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Wikipedia Viewer Project</title>
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+	</head>
+	<body>
+		<div class="container">
+			<!-- Search form and buttons -->
+			<div class="row">
+				<div class="col-md-8 col-md-offset-2">
+					<form class="form-horizontal">
+						<div class="form-group">
+							<input id="search-term" type="text" class="form-control" placeholder="Search Wikipedia">
+						</div>
+						<div class="form-group">
+							<button id="random-button" type="button" class="btn btn-primary">Random</button>
+							<button id="search-button" type="button" class="btn btn-primary">Search</button>
+						</div>
+					</form>
+				</div>
+			</div>
+			<!-- Search results -->
+			<div class="row">
+				<div id="search-results" class="col-md-8 col-md-offset-2">
+
+				</div>
+			</div>
+		</div>
+
+		<script src="scripts/jquery-3.1.0.min.js"></script>
+		<script src="scripts/bootstrap.min.js"></script>
+		<script>
+			$(function() {
+				//Exclude results that do not contain text on the header, exerpt or the link
+				//Exclude results that are undefined, which means not enough search results are returned for the searched term
+				//Search button functionality
+				$('#search-button').on('click', function() {
+					var searchTerm = $('#search-term').val();
+					$.getJSON('https://en.wikipedia.org/w/api.php?', {
+					action: 'opensearch',
+					search: searchTerm, // Required search term
+					limit: 20,
+					profile: 'fuzzy',
+					namespace: 0,
+					origin: '*'
+				}, function(data) {
+					var searchLimit = 20;
+					for (var i = 0; i < searchLimit; i++) {
+						var searchHeader = '<h1>' + data[1][i] + '</h1>';
+						var searchExerpt = '<p>' + data[2][i] + '</p>';
+						var searchLink = '<a class="btn btn-default" target="_blank" href="' + data[3][i] + '">Wikipedia Article</a>';
+						$('#search-results').append(searchHeader, searchExerpt, searchLink);
+					}
+				});
+				});
+				$('#search-term').on('change', function() {
+					$('#search-results').empty();
+				});
+			});
+		</script>
+	</body>
+</html>

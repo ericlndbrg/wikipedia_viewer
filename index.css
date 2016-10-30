@@ -1,0 +1,18 @@
+form {
+	position: relative;
+	top: 270px;
+}
+.form-group {
+	padding: 0 15px;
+}
+h1 > a, h1 > a:hover {
+	color: #2F79C3;
+}
+.form-group > a, .form-group > a:hover {
+	background-color: #40e0d0;
+	border-color: #40e0d0;
+}
+#search-button {
+	background-color: #e04050;
+	border-color: #e04050;
+}
